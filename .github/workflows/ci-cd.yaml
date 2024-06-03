@@ -33,9 +33,15 @@ jobs:
       - name: Deploy to Minikube - Services
         run: kubectl apply -f Kubernetes/Service.yaml
 
+      # Instalación de Prometheus y Grafana
       - name: Install Prometheus
-        run: helm install prometheus prometheus-community/prometheus
+        run: |
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo update
+          helm install prometheus prometheus-community/prometheus
 
       - name: Install Grafana
-        run: helm install grafana grafana/grafana
-
+        run: |
+          helm repo add grafana https://grafana.github.io/helm-charts
+          helm repo update
+          helm install grafana grafana/grafana
