@@ -14,6 +14,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Use Node.js 20
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
       - name: Install Minikube dependencies
         run: |
           sudo apt-get update
