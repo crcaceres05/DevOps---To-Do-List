@@ -6,28 +6,25 @@ on:
       - main
 
 jobs:
-  build:
+  setup-minikube:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      # Tests
+      - name: Install Minikube dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y conntrack
 
-      - name: Build Docker image
-        run: docker build -t crcaceres05/devops_to_do_list:latest .
+      - name: Install Minikube
+        run: |
+          curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+          sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
-      # Configuracion en Minikube
-      - name: Setup Minikube
-        uses: engineerd/setup-minikube@v1
-        with:
-          minikube_version: latest
-          kubernetes_version: latest
-
-      # Inicia Minikube
       - name: Start Minikube
-        run: minikube start
+        run: |
+          minikube start --vm-driver=none
 
       # Despliegue en Minikube
       - name: Deploy to Minikube - Deployment
