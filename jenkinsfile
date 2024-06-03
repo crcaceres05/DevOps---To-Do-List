@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Construir la imagen Docker
+                    docker.image('crcaceres05/devops-to-do-list').pull()
+                    docker.build('crcaceres05/devops-to-do-list')
+                }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Aquí irían tus pasos de pruebas, por ejemplo, ejecutar pruebas unitarias
+                sh 'echo "Ejecutando pruebas..."'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Desplegar la aplicación en Kubernetes
+                sh 'kubectl apply -f Kubernetes/deployment.yaml'
+                sh 'kubectl apply -f Kubernetes/Service.yaml'
+            }
+        }
+        
+        stage('Prometheus') {
+            steps {
+                // Instalar Prometheus
+                sh 'helm install prometheus prometheus-community/prometheus'
+            }
+        }
+        
+        stage('Grafana') {
+            steps {
+                // Instalar Grafana
+                sh 'helm install grafana grafana/grafana'
+            }
+        }
+        
+        stage('Finalize') {
+            steps {
+                // Realizar cualquier tarea de limpieza o notificación necesaria
+                sh 'echo "Pipeline finalizado"'
+            }
+        }
+    }
+}
