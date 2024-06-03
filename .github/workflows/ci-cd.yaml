@@ -16,7 +16,7 @@ jobs:
       # Tests
 
       - name: Build Docker image
-        run: docker build -t devops-to-do-list .
+        run: docker build -t crcaceres05/devops_to_do_list:latest .
 
       # Configuracion en Minikube
       - name: Setup Minikube
@@ -30,5 +30,15 @@ jobs:
         run: minikube start
 
       # Despliegue en Minikube
-      - name: Deploy to Minikube
-        run: kubectl apply -f deployment.yaml
+      - name: Deploy to Minikube - Deployment
+        run: kubectl apply -f Kubernetes/deployment.yaml
+
+      - name: Deploy to Minikube - Services
+        run: kubectl apply -f Kubernetes/Service.yaml
+
+      - name: Install Prometheus
+        run: helm install prometheus prometheus-community/prometheus
+
+      - name: Install Grafana
+        run: helm install grafana grafana/grafana
+
