@@ -1,0 +1,34 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Tests
+
+      - name: Build Docker image
+        run: docker build -t devops-to-do-list .
+
+      # Configuracion en Minikube
+      - name: Setup Minikube
+        uses: engineerd/setup-minikube@v1
+        with:
+          minikube_version: latest
+          kubernetes_version: latest
+
+      # Inicia Minikube
+      - name: Start Minikube
+        run: minikube start
+
+      # Despliegue en Minikube
+      - name: Deploy to Minikube
+        run: kubectl apply -f deployment.yaml
