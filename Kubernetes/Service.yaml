@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-to-do-list-service
+spec:
+  selector:
+    app: devops-to-do-list
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 4000
+      nodePort: 30001
+  type: NodePort

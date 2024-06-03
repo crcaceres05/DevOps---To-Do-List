@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-to-do-list
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devops-to-do-list
+  template:
+    metadata:
+      labels:
+        app: devops-to-do-list
+    spec:
+      imagePullSecrets:
+        - name: myregistrykey
+      containers:
+      - name: devops-to-do-list
+        image: crcaceres05/devops_to_do_list:latest
+        ports:
+        - containerPort: 4000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
